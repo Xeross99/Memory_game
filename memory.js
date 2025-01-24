@@ -20,56 +20,65 @@ function shuffleArray(array) {
 }
 
 function showCard(nr) {
-    let opacityValue = $('#c' + nr).css('opacity');
+    let card = document.getElementById('c' + nr);
+    let opacityValue = window.getComputedStyle(card).getPropertyValue('opacity');
     if (opacityValue != 0 && lock == false) {
         lock = true;
         let image = "url(img/" + cards[nr] + ")";
 
-        $('#c' + nr).css('background-image', image);
-        $('#c' + nr).addClass('cardA');
-        $('#c' + nr).removeClass('card');
+        card.style.backgroundImage = image;
+        card.classList.add('cardA');
+        card.classList.remove('card');
 
-        if (oneVisible == false) {
-            //first card
+        if (!oneVisible) {
+            // First card
             oneVisible = true;
             visible_nr = nr;
             lock = false;
-        }
-        else {
-            //second card
-            if (cards[visible_nr] == cards[nr]) {
-                setTimeout(function () { hide2Cards(nr, visible_nr) }, 750);
-            }
-            //wrong card
-            else {
-                setTimeout(function () { restore2Cards(nr, visible_nr) }, 1000);
+        } else {
+            // Second card
+            if (cards[visible_nr] === cards[nr]) {
+                setTimeout(function () { hide2Cards(nr, visible_nr); }, 750);
+            } else {
+                setTimeout(function () { restore2Cards(nr, visible_nr); }, 1000);
             }
 
             turnCounter++;
-            $('.score').html('Turn counter: ' + turnCounter);
+            document.querySelector('.score').innerHTML = 'Turn counter: ' + turnCounter;
             oneVisible = false;
         }
     }
 }
 
 function hide2Cards(nr1, nr2) {
-    $('#c' + nr1).css('opacity', 0);
-    $('#c' + nr2).css('opacity', 0);
+    let card1 = document.getElementById('c' + nr1);
+    let card2 = document.getElementById('c' + nr2);
+
+    card1.style.opacity = '0';
+    card2.style.opacity = '0';
     lock = false;
     pairsLeft--;
 
-    if (pairsLeft == 0) {
-        $('header').css('opacity', 0);
-        $('.board').html('</br></br><h1>You win!</h1></br><p>Done in: ' + turnCounter + ' turns</p></br><span onclick="location.reload()">try again!</span>');
+    if (pairsLeft === 0) {
+        document.querySelector('header').style.opacity = '0';
+        document.querySelector('.board').innerHTML = `
+            </br></br><h1>You win!</h1></br>
+            <p>Done in: ${turnCounter} turns</p></br>
+            <span onclick="location.reload()">try again!</span>`;
     }
 }
-function restore2Cards(nr1, nr2) {
-    $('#c' + nr1).css('background-image', 'url(img/karta.png)');
-    $('#c' + nr1).addClass('card');
-    $('#c' + nr1).removeClass('cardA');
 
-    $('#c' + nr2).css('background-image', 'url(img/karta.png)');
-    $('#c' + nr2).addClass('card');
-    $('#c' + nr2).removeClass('cardA');
+function restore2Cards(nr1, nr2) {
+    let card1 = document.getElementById('c' + nr1);
+    let card2 = document.getElementById('c' + nr2);
+
+    card1.style.backgroundImage = 'url(img/karta.png)';
+    card1.classList.add('card');
+    card1.classList.remove('cardA');
+
+    card2.style.backgroundImage = 'url(img/karta.png)';
+    card2.classList.add('card');
+    card2.classList.remove('cardA');
+
     lock = false;
 }

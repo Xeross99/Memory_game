@@ -1,4 +1,12 @@
+@font-face {
+	font-family: 'Lobster';
+	src: url('fonts/Lobster-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
 body {
+	font-family: 'Lobster', sans-serif;
 	margin: 0;
 	background-color: #26282E;
 	color: #209781;
